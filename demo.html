@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Challenge App - UI/UX Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding-top: 40px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .description {
+            font-size: 16px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .progress-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-percentage {
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            background: #f8f9fa;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .custom-select.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .generate-button {
+            width: 100%;
+            padding: 20px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+        }
+
+        .generate-button:active {
+            transform: translateY(0);
+        }
+
+        .generate-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .button-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .footer-card {
+            background: rgba(255,255,255,0.8);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .demo-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #667eea;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .features-list {
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .features-list h3 {
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+
+        .features-list ul {
+            list-style: none;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-badge">UI/UX Demo</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Language Challenge</h1>
+            <p class="subtitle">100 Days to Fluency</p>
+            <p class="description">
+                Embark on a personalized language learning journey designed just for you. 
+                Select your preferences below to create your custom 100-day challenge.
+            </p>
+        </div>
+
+        <div class="progress-card">
+            <div class="progress-text">Setup Progress</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-percentage" id="progressText">0%</div>
+        </div>
+
+        <div class="form-card">
+            <div class="section">
+                <h3 class="section-title">🌍 Choose Your Language</h3>
+                <p class="section-subtitle">Which language would you like to master?</p>
+                <select class="custom-select" id="languageSelect">
+                    <option value="">🌍 Select a language</option>
+                    <option value="spanish">🇪🇸 Spanish</option>
+                    <option value="french">🇫🇷 French</option>
+                    <option value="german">🇩🇪 German</option>
+                    <option value="italian">🇮🇹 Italian</option>
+                    <option value="portuguese">🇵🇹 Portuguese</option>
+                    <option value="japanese">🇯🇵 Japanese</option>
+                    <option value="korean">🇰🇷 Korean</option>
+                    <option value="mandarin">🇨🇳 Chinese (Mandarin)</option>
+                    <option value="arabic">🇸🇦 Arabic</option>
+                    <option value="russian">🇷🇺 Russian</option>
+                </select>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">📊 Your Current Level</h3>
+                <p class="section-subtitle">How would you rate your current skills?</p>
+                <select class="custom-select" id="levelSelect">
+                    <option value="">📚 Select your level</option>
+                    <option value="beginner">🌱 Beginner - Just starting out</option>
+                    <option value="intermediate">🌿 Intermediate - Some experience</option>
+                    <option value="advanced">🌳 Advanced - Confident speaker</option>
+                </select>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">🎯 Your Goal</h3>
+                <p class="section-subtitle">What's your main motivation for learning?</p>
+                <select class="custom-select" id="useCaseSelect">
+                    <option value="">🎯 Select your use case</option>
+                    <option value="travel">✈️ Travel - Explore the world</option>
+                    <option value="school">🎓 School - Academic success</option>
+                    <option value="business">💼 Business - Professional growth</option>
+                </select>
+            </div>
+
+            <button class="generate-button" id="generateButton" disabled>
+                🚀 Generate My Challenge
+                <div class="button-subtitle">Create your personalized 100-day plan</div>
+            </button>
+        </div>
+
+        <div class="footer-card">
+            <p class="footer-text">Join thousands of learners on their language journey</p>
+        </div>
+
+        <div class="features-list">
+            <h3>✨ UI/UX Improvements Made</h3>
+            <ul>
+                <li>🎨 Beautiful gradient backgrounds</li>
+                <li>📱 Modern card-based design</li>
+                <li>✨ Smooth entrance animations</li>
+                <li>📊 Interactive progress tracking</li>
+                <li>🎯 Enhanced visual hierarchy</li>
+                <li>🔄 Responsive button interactions</li>
+                <li>🌈 Professional color scheme</li>
+                <li>📐 Consistent spacing & typography</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const languageSelect = document.getElementById('languageSelect');
+        const levelSelect = document.getElementById('levelSelect');
+        const useCaseSelect = document.getElementById('useCaseSelect');
+        const generateButton = document.getElementById('generateButton');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        function updateProgress() {
+            const selections = [languageSelect.value, levelSelect.value, useCaseSelect.value];
+            const completed = selections.filter(Boolean).length;
+            const progress = (completed / 3) * 100;
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '%';
+            
+            generateButton.disabled = completed < 3;
+            
+            // Update select styling
+            [languageSelect, levelSelect, useCaseSelect].forEach(select => {
+                if (select.value) {
+                    select.classList.add('selected');
+                } else {
+                    select.classList.remove('selected');
+                }
+            });
+        }
+
+        languageSelect.addEventListener('change', updateProgress);
+        levelSelect.addEventListener('change', updateProgress);
+        useCaseSelect.addEventListener('change', updateProgress);
+
+        generateButton.addEventListener('click', () => {
+            if (!generateButton.disabled) {
+                alert('🎉 Challenge Ready!\n\nYour personalized 100-day language challenge is ready to begin!\n\n(In the real app, this would navigate to the Challenge Screen with daily tasks, progress tracking, and more!)');
+            }
+        });
+
+        // Initial progress update
+        updateProgress();
+    </script>
+</body>
+</html>

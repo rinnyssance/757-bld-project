@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUNNiE - Language Learning App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Light Theme */
+        body.light {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #2c3e50;
+        }
+
+        /* Dark Theme */
+        body.dark {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .description {
+            font-size: 16px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* Cards */
+        .card {
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .light .card {
+            background: rgba(255,255,255,0.95);
+        }
+
+        .dark .card {
+            background: rgba(30,30,30,0.95);
+            border-color: rgba(255, 215, 0, 0.2);
+        }
+
+        /* Progress Bar */
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .dark .progress-bar {
+            background: #333;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-percentage {
+            text-align: center;
+            color: #FFA500;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Form Sections */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .light .section-title {
+            color: #2c3e50;
+        }
+
+        .dark .section-title {
+            color: #fff;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .light .section-subtitle {
+            color: #7f8c8d;
+        }
+
+        .dark .section-subtitle {
+            color: #aaa;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #FFD700;
+            border-radius: 16px;
+            background: #FFFACD;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .dark .custom-select {
+            background: #2d2d2d;
+            border-color: #FFD700;
+            color: #fff;
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: #FFA500;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 165, 0, 0.3);
+        }
+
+        .custom-select.selected {
+            border-color: #FFA500;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 165, 0, 0.2);
+        }
+
+        /* Generate Button */
+        .generate-button {
+            width: 100%;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #2c3e50;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            box-shadow: 0 8px 24px rgba(255, 165, 0, 0.3);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .generate-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(255, 165, 0, 0.4);
+        }
+
+        .generate-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .button-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid #FFD700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .light .action-btn {
+            background: #FFFACD;
+            color: #2c3e50;
+        }
+
+        .dark .action-btn {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
+        }
+
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .action-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Daily Checklist */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dark .checklist-item {
+            border-bottom-color: #444;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #FFD700;
+            border-radius: 50%;
+            margin-right: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .task-checkbox.checked {
+            background: #FFD700;
+        }
+
+        .task-checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #2c3e50;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 16px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+            border: 3px solid #FFD700;
+        }
+
+        .dark .modal-content {
+            background: #1e1e1e;
+            color: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #FFFACD;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #FFD700;
+        }
+
+        .dark .chat-messages {
+            background: #2d2d2d;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+        }
+
+        .message.bot .message-bubble {
+            background: #FFD700;
+            color: #2c3e50;
+        }
+
+        .message.user .message-bubble {
+            background: #FFA500;
+            color: white;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            outline: none;
+            background: #FFFACD;
+        }
+
+        .dark .chat-input input {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: #FFD700;
+            color: #2c3e50;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFA500;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Badges */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .badge {
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        .badge.earned {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .badge.locked {
+            border-color: #95a5a6;
+            background: rgba(149, 165, 166, 0.1);
+            opacity: 0.6;
+        }
+
+        .badge-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .badge-name {
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="light">
+    <div class="container">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <button class="nav-btn" onclick="showProfile()" title="Profile">🐝</button>
+            <button class="nav-btn" onclick="showStats()" title="Stats">📊</button>
+            <button class="nav-btn" onclick="toggleTheme()" title="Toggle Theme">🌙</button>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">🐝 HUNNiE</h1>
+            <p class="subtitle">Buzz Your Way to Fluency</p>
+            <p class="description">
+                Sweet language learning with AI-powered conversations and daily challenges. Let's create your hive of knowledge! 🍯
+            </p>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="card">
+            <div class="progress-text">🍯 Setup Progress</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-percentage" id="progressText">0%</div>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="card">
+            <!-- Language Selection -->
+            <div class="section">
+                <h3 class="section-title">🌍 What language do you want to learn?</h3>
+                <p class="section-subtitle">Choose the language you'd like to master</p>
+                <select class="custom-select" id="languageSelect">
+                    <option value="">🌍 Select a language</option>
+                    <option value="spanish">🇪🇸 Spanish</option>
+                    <option value="french">🇫🇷 French</option>
+                    <option value="german">🇩🇪 German</option>
+                    <option value="italian">🇮🇹 Italian</option>
+                    <option value="portuguese">🇵🇹 Portuguese</option>
+                    <option value="japanese">🇯🇵 Japanese</option>
+                    <option value="korean">🇰🇷 Korean</option>
+                    <option value="mandarin">🇨🇳 Chinese (Mandarin)</option>
+                    <option value="arabic">🇸🇦 Arabic</option>
+                    <option value="russian">🇷🇺 Russian</option>
+                </select>
+            </div>
+
+            <!-- Proficiency Level -->
+            <div class="section">
+                <h3 class="section-title">📊 What is your proficiency?</h3>
+                <p class="section-subtitle">How would you rate your current skills?</p>
+                <select class="custom-select" id="levelSelect">
+                    <option value="">📚 Select your level</option>
+                    <option value="beginner">🐛 Beginner - Just starting to buzz</option>
+                    <option value="intermediate">🐝 Intermediate - Building your hive</option>
+                    <option value="advanced">👑 Advanced - Queen bee level</option>
+                </select>
+            </div>
+
+            <!-- Learning Goal -->
+            <div class="section">
+                <h3 class="section-title">🎯 Why are you learning?</h3>
+                <p class="section-subtitle">What's your main motivation for learning?</p>
+                <select class="custom-select" id="useCaseSelect">
+                    <option value="">🎯 Select your goal</option>
+                    <option value="travel">✈️ Travel - Explore new flowers</option>
+                    <option value="school">🎓 School - Academic honey</option>
+                    <option value="business">💼 Business - Professional pollination</option>
+                </select>
+            </div>
+
+            <!-- Generate Button -->
+            <button class="generate-button" id="generateButton" disabled onclick="generateChallenge()">
+                🐝 Generate My Hive
+                <div class="button-subtitle">Create your personalized learning journey</div>
+            </button>
+        </div>
+
+        <!-- Daily Checklist Card -->
+        <div class="card" id="dailyCard" style="display: none;">
+            <h3 class="section-title">🍯 Today's Buzz Tasks</h3>
+            <p class="section-subtitle">Complete these daily activities to keep your streak alive!</p>
+            
+            <div class="checklist-item">
+                <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                <span class="task-text">🌸 Learn 10 new vocabulary words</span>
+            </div>
+            <div class="checklist-item">
+                <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                <span class="task-text">🗣️ Practice conversation for 15 minutes</span>
+            </div>
+            <div class="checklist-item">
+                <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                <span class="task-text">👂 Listen to native content</span>
+            </div>
+            <div class="checklist-item">
+                <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                <span class="task-text">✍️ Write 3 sentences in target language</span>
+            </div>
+            <div class="checklist-item">
+                <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                <span class="task-text">🎯 Complete one grammar exercise</span>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="card">
+            <h3 class="section-title">🐝 Hive Actions</h3>
+            <div class="quick-actions">
+                <button class="action-btn" onclick="showGPTChat()">
+                    <span class="action-icon">🤖</span>
+                    <span class="action-text">AI Tutor</span>
+                </button>
+                <button class="action-btn" onclick="showStats()">
+                    <span class="action-icon">📈</span>
+                    <span class="action-text">Progress</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GPT Chat Modal -->
+    <div id="gptModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('gptModal')">&times;</button>
+            <h3>🤖 AI Language Tutor</h3>
+            <p>Practice conversation with your personal language bee! 🐝</p>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <div class="message-bubble">
+                            🐝 ¡Hola! I'm your AI language tutor bee! Let's practice Spanish conversation. How are you buzzing today?
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Type in Spanish..." onkeypress="handleChatEnter(event)">
+                    <button class="send-btn" onclick="sendMessage()">🐝</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('statsModal')">&times;</button>
+            <h3>📊 Your Hive Progress</h3>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">🔥 Buzz Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">📅 Total Days</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">234</div>
+                    <div class="stat-label">🌸 Words Collected</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">87%</div>
+                    <div class="stat-label">🎯 Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
+            <h3>🐝 Your Bee Profile</h3>
+            <p><strong>Busy Bee Alex</strong> • Intermediate Spanish</p>
+            
+            <h4 style="margin-top: 20px;">🏆 Honey Badges</h4>
+            <div class="badges-grid">
+                <div class="badge earned">
+                    <span class="badge-icon">🐛</span>
+                    <div class="badge-name">First Buzz</div>
+                </div>
+                <div class="badge earned">
+                    <span class="badge-icon">🔥</span>
+                    <div class="badge-name">Week Warrior</div>
+                </div>
+                <div class="badge earned">
+                    <span class="badge-icon">💬</span>
+                    <div class="badge-name">Chatterbox</div>
+                </div>
+                <div class="badge earned">
+                    <span class="badge-icon">🌸</span>
+                    <div class="badge-name">Pollen Collector</div>
+                </div>
+                <div class="badge earned">
+                    <span class="badge-icon">🌙</span>
+                    <div class="badge-name">Night Bee</div>
+                </div>
+                <div class="badge earned">
+                    <span class="badge-icon">🎯</span>
+                    <div class="badge-name">Perfect Hive</div>
+                </div>
+                <div class="badge locked">
+                    <span class="badge-icon">🔒</span>
+                    <div class="badge-name">Queen Bee</div>
+                </div>
+                <div class="badge locked">
+                    <span class="badge-icon">🔒</span>
+                    <div class="badge-name">Hive Master</div>
+                </div>
+                <div class="badge locked">
+                    <span class="badge-icon">🔒</span>
+                    <div class="badge-name">Social Swarm</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isDark = false;
+
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.className = isDark ? 'dark' : 'light';
+            document.querySelector('.nav-btn[title="Toggle Theme"]').textContent = isDark ? '☀️' : '🌙';
+        }
+
+        function updateProgress() {
+            const languageSelect = document.getElementById('languageSelect');
+            const levelSelect = document.getElementById('levelSelect');
+            const useCaseSelect = document.getElementById('useCaseSelect');
+            const generateButton = document.getElementById('generateButton');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+
+            const selections = [languageSelect.value, levelSelect.value, useCaseSelect.value];
+            const completed = selections.filter(Boolean).length;
+            const progress = (completed / 3) * 100;
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '%';
+            
+            generateButton.disabled = completed < 3;
+            
+            // Update select styling
+            [languageSelect, levelSelect, useCaseSelect].forEach(select => {
+                if (select.value) {
+                    select.classList.add('selected');
+                } else {
+                    select.classList.remove('selected');
+                }
+            });
+        }
+
+        function generateChallenge() {
+            const language = document.getElementById('languageSelect').value;
+            const level = document.getElementById('levelSelect').value;
+            const useCase = document.getElementById('useCaseSelect').value;
+            
+            if (language && level && useCase) {
+                document.getElementById('dailyCard').style.display = 'block';
+                document.getElementById('dailyCard').scrollIntoView({ behavior: 'smooth' });
+                
+                alert(`🐝 Your Hive is Ready!\n\nYour personalized ${language} learning journey for ${useCase} (${level} level) is buzzing with activity!\n\n🍯 Daily tasks are now available below!\n\nStart collecting pollen (knowledge) today! 🌸`);
+            }
+        }
+
+        function toggleTask(checkbox) {
+            checkbox.classList.toggle('checked');
+            
+            // Check if all tasks are completed
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const completed = document.querySelectorAll('.task-checkbox.checked');
+            
+            if (completed.length === checkboxes.length) {
+                setTimeout(() => {
+                    alert('🎉 Fantastic! You\'ve completed all your daily buzz tasks!\n\n🐝 Your hive is thriving!\n🍯 +50 honey points earned!\n🔥 Streak maintained!');
+                }, 500);
+            }
+        }
+
+        function showGPTChat() {
+            document.getElementById('gptModal').classList.add('show');
+        }
+
+        function showStats() {
+            document.getElementById('statsModal').classList.add('show');
+        }
+
+        function showProfile() {
+            document.getElementById('profileModal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            
+            if (input.value.trim()) {
+                // Add user message
+                const userMsg = document.createElement('div');
+                userMsg.className = 'message user';
+                userMsg.innerHTML = `<div class="message-bubble">${input.value}</div>`;
+                messages.appendChild(userMsg);
+                
+                // Clear input
+                input.value = '';
+                
+                // Add bot response after delay
+                setTimeout(() => {
+                    const responses = [
+                        "🐝 ¡Excelente! That's sweet progress! Can you tell me about your favorite hobby?",
+                        "🍯 Good effort! Let me help you with that pronunciation, busy bee!",
+                        "🌸 Perfect! Now let's collect some new vocabulary pollen!",
+                        "🐝 ¡Muy bien! Your Spanish hive is growing stronger every day!",
+                        "🍯 Great job! Keep buzzing with practice. What would you like to learn next?",
+                    ];
+                    
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'message bot';
+                    botMsg.innerHTML = `<div class="message-bubble">${responses[Math.floor(Math.random() * responses.length)]}</div>`;
+                    messages.appendChild(botMsg);
+                    messages.scrollTop = messages.scrollHeight;
+                }, 1000);
+                
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Event listeners
+        document.getElementById('languageSelect').addEventListener('change', updateProgress);
+        document.getElementById('levelSelect').addEventListener('change', updateProgress);
+        document.getElementById('useCaseSelect').addEventListener('change', updateProgress);
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+        });
+
+        // Initial progress update
+        updateProgress();
+    </script>
+</body>
+</html>
